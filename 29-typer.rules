@@ -1,0 +1,1 @@
+KERNEL=="typer", MODE="0666", NAME="input/typer"
