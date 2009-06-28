@@ -86,6 +86,12 @@ MODULE_LICENSE("GPL");
 
 
 /* globals */
+/* module parameters */
+static char* kbd_name = "Keyboard";
+static char* mouse_name = "Mouse";
+module_param(kbd_name, charp, S_IRUGO);
+module_param(mouse_name, charp, S_IRUGO);
+
 unsigned long typer_user = 0;
 unsigned long old_jiffies = 0;
 
@@ -298,7 +304,7 @@ static int typer_connect(
         /* XXX: It's ugly to judge from the device names, but I don't 
          *      have a better solution, yet. 
          */
-        if(strstr(dev->name, "Keyboard") || strstr(dev->name, "keyboard"))
+        if(strstr(dev->name, kbd_name))
             /* The first handle is good, we want it. */
             kbd_handle = list_entry(dev->h_list.next, 
                                     struct input_handle, d_node);
@@ -307,7 +313,7 @@ static int typer_connect(
             return -ENODEV;
         }
     }else if(handler == &typer_mouse_handler){
-        if(strstr(dev->name, "Mouse") || strstr(dev->name, "mouse"))
+        if(strstr(dev->name, mouse_name))
             mouse_handle = list_entry(dev->h_list.next, 
                                       struct input_handle, d_node);
         else{
