@@ -383,11 +383,9 @@ static void typer_disconnect(struct input_handle *handle)
      */
 
     /* wipe out kbd_handle & mouse_handle acordingly */
-    if(strstr(handle->dev->name, "Keyboard") || 
-       strstr(handle->dev->name, "keyboard"))
+    if(strstr(handle->dev->name, kbd_name))
         kbd_handle = NULL;
-    else if(strstr(handle->dev->name, "Mouse") || 
-            strstr(handle->dev->name, "mouse"))
+    else if(strstr(handle->dev->name, mouse_name))
         mouse_handle = NULL;
 
 	input_close_device(handle);
