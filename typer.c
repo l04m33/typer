@@ -428,7 +428,9 @@ static int __init typer_init(void)
         goto unreg_kbd;
     }
 
-    snprintf(typer_dev.bus_id, sizeof(typer_dev.bus_id), "typer");
+    /* XXX: the bus_id field is missing in 2.6.30 */
+    //snprintf(typer_dev.bus_id, sizeof(typer_dev.bus_id), "typer");
+    typer_dev.kobj.name = "typer";
     typer_dev.devt = typer_devno;
     typer_dev.class = &input_class;
     typer_dev.parent = NULL;
@@ -487,7 +489,7 @@ int typer_open(struct inode *inode, struct file *file)
      * the program dropped the privilege after openning the file,
      * it can still read & write.
      */
-    if((current->uid != typer_user) && !capable(CAP_SYS_ADMIN))
+    if((current->cred->euid != typer_user) && !capable(CAP_SYS_ADMIN))
         return -EPERM;
     if(atomic_inc_return(&typer_count) != 1){
         atomic_dec(&typer_count);
